@@ -56,7 +56,8 @@ class Summarizer:
 
         try:
             response = self.client.chat.completions.create(
-                model="deepseek-chat",
+                # model="deepseek-chat",
+                model="glm-4.7-flash",
                 messages=[{"role": "user", "content": prompt}],
                 stream=False
             )
