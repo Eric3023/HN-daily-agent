@@ -3,6 +3,7 @@
 负责通过 PushPlus 发送微信消息
 """
 import requests
+import os
 from requests.exceptions import Timeout, ConnectionError, RequestException
 from datetime import datetime
 from config import get_no_proxy
