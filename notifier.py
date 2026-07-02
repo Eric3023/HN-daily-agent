@@ -65,6 +65,9 @@ class WeChatNotifier:
             print(f"[错误] 推送服务器返回了无效的JSON: {e}")
         except RequestException as e:
             print(f"[错误] 推送网络错误: {e}")
+        
+        # 飞书推送（可选）
+        self.send_to_feishu(hn_articles, gh_repos, show_customize_tip)
 
     def _format_title(self):
         """格式化推送标题"""
@@ -103,3 +106,35 @@ class WeChatNotifier:
             body += "配置后，下一次日报会自动按你的设置生成。\n"
 
         return body
+
+    def send_to_feishu(self, hn_articles=None, gh_repos=None, show_customize_tip=False):
+        """发送日报到飞书群"""
+        feishu_webhook = os.getenv("FEISHU_WEBHOOK")
+        if not feishu_webhook:
+            print("[提示] 未配置 FEISHU_WEBHOOK，跳过飞书推送。")
+            return
+
+        print("[推送] 正在发送到飞书...")
+        title = self._format_title()
+        body = self._format_body(hn_articles, gh_repos, show_customize_tip)
+
+        # 飞书消息正文（纯文本，去掉 Markdown 格式标记）
+        text_content = f"{title}\n\n{body}"
+        # 飞书单条消息限 4000 字
+        text_content = text_content[:4000]
+
+        data = {
+            "msg_type": "text",
+            "content": {"text": text_content}
+        }
+
+        try:
+            resp = requests.post(feishu_webhook, json=data, proxies=self.no_proxy, timeout=15)
+            resp.raise_for_status()
+            result = resp.json()
+            if result.get("StatusCode") == 0 or result.get("code") == 0:
+                print(f"[成功] 飞书推送完成！")
+            else:
+                print(f"[失败] 飞书推送被拒绝: {resp.text}")
+        except Exception as e:
+            print(f"[错误] 飞书推送异常: {e}")
