@@ -22,7 +22,8 @@ class Summarizer:
         self.http_client = httpx.Client(trust_env=False)
         self.client = OpenAI(
             api_key=api_key,
-            base_url="https://api.deepseek.com",
+            # base_url="https://api.deepseek.com",
+            base_url="https://open.bigmodel.cn/api/paas/v4/"
             http_client=self.http_client
         )
 
