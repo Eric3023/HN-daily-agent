@@ -3,6 +3,7 @@ Hacker News 日报 Agent
 主入口：协调各模块完成每日新闻抓取、总结和推送
 """
 import time
+import os
 from config import (
     DEFAULT_SUMMARY_PROMPT_TEMPLATE,
     DEFAULT_TOP_COUNT,
