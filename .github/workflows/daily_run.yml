@@ -38,6 +38,7 @@ jobs:
       - name: Run Agent
         env:
           # 这里引用 GitHub 仓库里存的密钥
+          FEISHU_WEBHOOK: ${{ secrets.FEISHU_WEBHOOK }}
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
           PUSHPLUS_TOKEN: ${{ secrets.PUSHPLUS_TOKEN }}
           HN_TOP_COUNT: ${{ github.event.inputs.hn_top_count || vars.HN_TOP_COUNT }}
