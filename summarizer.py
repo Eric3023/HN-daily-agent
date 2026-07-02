@@ -23,7 +23,7 @@ class Summarizer:
         self.client = OpenAI(
             api_key=api_key,
             # base_url="https://api.deepseek.com",
-            base_url="https://open.bigmodel.cn/api/paas/v4/"
+            base_url="https://open.bigmodel.cn/api/paas/v4/",
             http_client=self.http_client
         )
 
